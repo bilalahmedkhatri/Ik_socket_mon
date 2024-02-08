@@ -1,18 +1,19 @@
 # chat/consumers.py
 import json
-import numpy as np
-import cv2
-import asyncio
-import base64
-import mss
-import random
+# import numpy as np
+# import cv2
+# import asyncio
+# import base64
+# import mss
+# import random
 
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
+        # print('chennal', self.chennal_name)
 
     async def receive(self, text_data):
         # text_data_json = json.loads(self.scope['url_route']['kwargs'])
@@ -21,11 +22,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # await self.send(recv)
         # message = text_data.replace('websockets', 'server')
         # print('Received ', self.websocket_receive(text_data))
-        print('Received ', type(text_data))
+
+        # Convert the image to bytes
+        img_bytes = text_data.rgb
+
+        # Send the image data to the client
+        await self.send(text_data=json.dumps({
+            'image_data': 'img_bytes'
+        }))
 
         # text_data.shot(out_put=f"name_{random.randint(100,222)}.png")
     async def websocket_receive(self, message):
         recv = message
+        await self.send('test')
         print('recv ', recv)
 
     async def disconnect(self, close_code):
