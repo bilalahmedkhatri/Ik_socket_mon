@@ -27,15 +27,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         img_bytes = text_data.rgb
 
         # Send the image data to the client
-        await self.send(text_data=json.dumps({
-            'image_data': 'img_bytes'
-        }))
+        await self.send('ss')
 
         # text_data.shot(out_put=f"name_{random.randint(100,222)}.png")
-    async def websocket_receive(self, message):
-        recv = message
-        await self.send('test')
-        print('recv ', recv)
+    # async def websocket_receive(self, message):
+    #     recv = message
+    #     # await self.send(recv)
+    #     print('recv ', recv)
 
     async def disconnect(self, close_code):
         pass
