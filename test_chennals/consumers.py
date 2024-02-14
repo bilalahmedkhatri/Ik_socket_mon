@@ -7,37 +7,23 @@ import json
 # import mss
 # import random
 
-from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        # self.channel_layer.
         await self.accept()
-        # print('chennal', self.chennal_name)
 
     async def receive(self, text_data):
-        # text_data_json = json.loads(self.scope['url_route']['kwargs'])
-        # print('Received ', text_data_json)
-        # recv = f"received message from websockets is: {text_data_json}"
-        # await self.send(recv)
-        # message = text_data.replace('websockets', 'server')
-        # print('Received ', self.websocket_receive(text_data))
-
-        # Convert the image to bytes
-        img_bytes = text_data.rgb
-
         # Send the image data to the client
-        await self.send('ss')
-
-        # text_data.shot(out_put=f"name_{random.randint(100,222)}.png")
-    # async def websocket_receive(self, message):
-    #     recv = message
-    #     # await self.send(recv)
-    #     print('recv ', recv)
+        json_data = json.loads(text_data)
+        print(json_data['frames'])
+        await self.send('send SS from ser dj')
 
     async def disconnect(self, close_code):
         pass
 
-# TypeError: AsyncWebsocketConsumer.websocket_receive() missing 1 required positional argument: 'message'
-
-# ['__annotations__', '__call__', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_sync', 'accept', 'as_asgi', 'base_send', 'channel_layer', 'channel_layer_alias', 'close', 'connect', 'disconnect', 'dispatch', 'groups', 'receive', 'scope', 'send', 'websocket_connect', 'websocket_disconnect', 'websocket_receive']
+    async def send_video(self, event):
+        video_data = event['video_data']
+        await self.send(text_data=json.dumps({'video_data': video_data}))
