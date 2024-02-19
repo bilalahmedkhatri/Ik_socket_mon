@@ -20,4 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path("", include("app.urls")),
+    path("", include("test_chennals.urls")),
+    path('video-stream-api-auth/', include('rest_framework.urls')),
+
 ]
