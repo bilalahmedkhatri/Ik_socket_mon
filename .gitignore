@@ -164,7 +164,6 @@ cython_debug/
 
 # dependencies
 /stream_video/node_modules
-/stream_video
 /.pnp
 .pnp.js
 
