@@ -1,44 +1,19 @@
 import json
 
 from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 
 
-class VideoConsumer(WebsocketConsumer):
-    def connect(self):
-        # self.room_name = self.scope["url_route"]["kwargs"]["video"]
-        # self.room_group_name = f"chat_{self.room_name}"
+class VideoConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
 
-        # Join room group
-        # async_to_sync(self.channel_layer.group_add)(
-        #     self.room_group_name, self.channel_name
-        # )
-        print("result connect", self.scope['path'])
-        self.accept()
+    async def receive(self, text_data=None):
+        text_data_json = json.dumps(text_data)
+        # message = text_data_json[0]
+        print("message", text_data_json)
+        for x in range(10):
+            await self.send(text_data=f"check test {x}")
 
-    def disconnect(self, close_code):
-        # Leave room group
-        # async_to_sync(self.channel_layer.group_discard)(
-        #     self.room_group_name, self.channel_name
-        # )
-        # print("result disconnect", close_code)
+    async def disconnect(self, close_code):
         pass
-
-    # Receive message from WebSocket
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        print("message", message)
-        text_data_json
-
-        # Send message to room group
-        # async_to_sync(self.channel_layer.group_send)(
-        #     self.room_group_name, {"type": "chat.message", "message": message}
-        # )
-
-    # Receive message from room group
-    # def chat_message(self, event):
-    #     message = event["message"]
-
-        # Send message to WebSocket
-        # self.send(text_data=json.dumps({"message": message}))
